@@ -1,0 +1,27 @@
+{
+  "name": "video_editor_0.0.1",
+  "version": "1.0.0",
+  "description": "Backend For Video Editor",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "None"
+  ],
+  "author": "Saif@IntegralX",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.689.0",
+    "@aws-sdk/s3-request-presigner": "^3.689.0",
+    "aws-sdk": "^2.1692.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
