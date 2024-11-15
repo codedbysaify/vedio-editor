@@ -10,7 +10,7 @@ export default function Home() {
         <div><Navbar/> </div>
           <div className="flex flex-col-reverse">
             {/* <div><VideoBox/></div> */}
-            <div><MainTimeline/></div>
+            {/* <div><MainTimeline/></div> */}
           </div>
       </div>
       

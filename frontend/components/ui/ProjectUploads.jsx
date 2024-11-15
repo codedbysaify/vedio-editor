@@ -1,17 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { FaDownload } from 'react-icons/fa';
 import VideoBox from './VideoBox';
-import VideoSnapshot from 'video-snapshot';
 import axios from 'axios';
 
 function ProjectUploads() {
   const [mediaFile, setMediaFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
-  const [selectedMediaSrc, setSelectedMediaSrc] = useState(null); // For VideoBox display
+  const [selectedMediaSrc, setSelectedMediaSrc] = useState(null);
   const projectVideoRef = useRef(null);
-  const [isVideo, setIsVideo] = useState(false); // Identify if the file is a video
+  const [isVideo, setIsVideo] = useState(false);
   const [cloudurl, setCloudUrl] = useState(null);
-  const [loading, setLoading] = useState(false); // Loading state for upload process
+  const [loading, setLoading] = useState(false);
 
   const handleFileClick = () => {
     if (!mediaFile) {
@@ -21,29 +20,20 @@ function ProjectUploads() {
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    console.log(file);
-
     if (!file) return;
 
     const fileType = file.type;
-    const userName = "Test"; //! Should be changed when setting up authentication
+    const userName = "Test";
     const fileName = file.name;
 
-    const toGetURLparams = {
-      fileType,
-      fileName,
-      userName
-    };
-
-    const getURL = "http://localhost:4000/api/uploadDataUrl"; //! Should be from .env file
+    const toGetURLparams = { fileType, fileName, userName };
+    const getURL = "http://localhost:4000/api/uploadDataUrl";
 
     try {
-      setLoading(true); // Start loading state
-
+      setLoading(true);
       const response = await axios.post(getURL, toGetURLparams);
       const { url } = response.data;
 
-      // Upload file using the pre-signed URL
       const uploadResponse = await axios.put(url, file, {
         headers: {
           'Content-Type': file.type,
@@ -51,89 +41,70 @@ function ProjectUploads() {
       });
 
       if (uploadResponse.status === 200) {
-        console.log('File uploaded successfully!');
-        const cloudUrl = url.split('?')[0]; // Strip off the query parameters for playback URL
-        setMediaFile(cloudUrl); // Update the mediaFile state immediately
-        setCloudUrl(cloudUrl); // Update cloudurl state
-      } else {
-        console.log('Upload failed.');
+        const cloudUrl = url.split('?')[0];
+        setMediaFile(cloudUrl);
+        setCloudUrl(cloudUrl);
       }
 
-      // Handle video or image preview
-      if (file && (file.type.startsWith('video/') || file.type.startsWith('image/'))) {
-        const fileURL = URL.createObjectURL(file);
-
-        if (file.type.startsWith('video/')) {
-          setIsVideo(true);
-          // const snapshoter = new VideoSnapshot(file);
-          // const previewSrc = await snapshoter.takeSnapshot();
-          // setImgUrl(previewSrc); // For video snapshot
-        } else {
-          setIsVideo(false);
-          setImgUrl(fileURL); // Set image URL if it's an image
-        }
+      if (file.type.startsWith('video/')) {
+        setIsVideo(true);
+      } else if (file.type.startsWith('image/')) {
+        setImgUrl(URL.createObjectURL(file));
       } else {
-        alert('Please select a video or image file.');
+        alert('Please select a valid video or image file.');
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
-      setLoading(false); // End loading state
+      setLoading(false);
     }
   };
 
-  // Handle thumbnail click to display video/image in VideoBox
   const handleThumbnailClick = () => {
-    setSelectedMediaSrc(mediaFile); // Set selected media for VideoBox without affecting ProjectUploads playback
+    setSelectedMediaSrc(mediaFile);
   };
 
-  const handleMediaClick = () => {
-    if (isVideo && projectVideoRef.current) {
-      if (projectVideoRef.current.paused) {
-        projectVideoRef.current.play();
-      } else {
-        projectVideoRef.current.pause();
-      }
-    }
+  const handleUploadAgain = () => {
+    setMediaFile(null);
+    setImgUrl(null);
+    setSelectedMediaSrc(null);
   };
-
 
   return (
     <div className="flex flex-col items-center text-center">
+      {/* Main upload box */}
       <div
-        className={`${mediaFile ? 'items-start' : 'justify-center items-center'} flex flex-col hover:cursor-pointer relative rounded-[30px] overflow-hidden ${
-          mediaFile ? 'border-2 border-blue-400 border-solid w-[170px] h-[100px]' : 'border-2 border-dashed'
-        }`}
+        className={`${
+          mediaFile ? 'border-blue-400' : 'border-dashed'
+        } border-2 flex flex-col justify-center items-center rounded-[15px] w-[200px] h-[100px] overflow-hidden cursor-pointer relative`}
         onClick={handleFileClick}
       >
-        {mediaFile ? (
-          <>
-            {!isVideo && (
-              <img
-                src={imgUrl}
-                alt="Media Thumbnail"
-                className="w-full h-auto rounded-[30px] cursor-pointer"
-                onClick={handleThumbnailClick} // Click to display in VideoBox
-              />
-            )}
-            {/* Video display in ProjectUploads */}
-            {isVideo && (
-              <video
-                ref={projectVideoRef}
-                src={mediaFile}
-                className="w-full h-auto rounded-[30px] cursor-pointer"
-                onClick={handleThumbnailClick} // Controls for independent playback in ProjectUploads
-                muted
-                autoPlay
-              />
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col justify-center items-center py-12 rounded-[15px]">
-            <p>
-              <FaDownload className="text-3xl text-gray-400 mb-4" />
-            </p>
-            <p className="text-gray-300">There is nothing yet. Click here to upload</p>
+        {/* Display uploaded media */}
+        {mediaFile && (
+          isVideo ? (
+            <video
+              ref={projectVideoRef}
+              src={mediaFile}
+              className="w-full h-auto rounded-[15px] cursor-pointer"
+              muted
+              autoPlay
+              onClick={handleThumbnailClick}
+            />
+          ) : (
+            <img
+              src={imgUrl}
+              alt="Uploaded Preview"
+              className="w-full h-auto rounded-[15px] cursor-pointer"
+              onClick={handleThumbnailClick}
+            />
+          )
+        )}
+
+        {/* Placeholder Text when no file is uploaded */}
+        {!mediaFile && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center px-2 cursor-pointer text-gray-400">
+            <FaDownload className="text-sm mr-2" />
+            <p className="text-xs">There is nothing yet. Click here to upload.</p>
           </div>
         )}
       </div>
@@ -146,9 +117,34 @@ function ProjectUploads() {
         onChange={handleFileChange}
       />
 
-      {selectedMediaSrc && (
-        <VideoBox mediaSrc={selectedMediaSrc} isVideo={isVideo} /> // Display in VideoBox without removing from ProjectUploads
-      )}
+      {/* Display uploaded media */}
+      {selectedMediaSrc && <VideoBox mediaSrc={selectedMediaSrc} isVideo={isVideo} />}
+
+      {/* Recent Uploads Section */}
+      <h2 className="mt-4 text-lg font-semibold">Recent Uploads</h2>
+      <div className="flex flex-col gap-2 mt-2">
+        <div className="w-[200px] h-[100px] rounded-[15px] overflow-hidden">
+          <img
+            src="video_pic_1.jpeg"
+            alt="Placeholder 1"
+            className="w-full h-full"
+          />
+        </div>
+        <div className="w-[200px] h-[100px] rounded-[15px] overflow-hidden">
+          <img
+            src="video_pic_2.jpeg"
+            alt="Placeholder 2"
+            className="w-full h-full"
+          />
+        </div>
+        <div className="w-[200px] h-[100px] rounded-[15px] overflow-hidden">
+          <img
+            src="video_pic_3.jpeg"
+            alt="Placeholder 3"
+            className="w-full h-full"
+          />
+        </div>
+      </div>
     </div>
   );
 }
