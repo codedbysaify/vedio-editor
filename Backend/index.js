@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import staticData from "./routes/staticData.js";
 import uploaddata from "./routes/uploadData.js"
+import recentItems from "./routes/recentItems.js"
 const app=express();
 const port=process.env.PORT || 3000;
 
@@ -18,6 +19,7 @@ app.get("/",(req,res)=>{
 })
 app.use("/api",staticData);
 app.use("/api",uploaddata)
+app.use("/api",recentItems)
 app.listen(port,()=>{
     console.log(`Backend is up \nPORT:${port}`);
 })

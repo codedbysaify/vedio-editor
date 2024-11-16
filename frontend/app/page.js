@@ -9,8 +9,8 @@ export default function Home() {
       <div className="bg-black flex flex-row">
         <div><Navbar/> </div>
           <div className="flex flex-col-reverse">
-            {/* <div><VideoBox/></div> */}
-            <div><MainTimeline/></div>
+            <div><VideoBox/></div>
+            {/* <div><MainTimeline/></div> */}
           </div>
       </div>
       

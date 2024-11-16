@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer1 from "./slices/slice";
+
+import currentVideo from "./slices/currentObjects";
 export const store=configureStore({
     reducer:{
-        s1reducer:reducer1
+        currentVideo:currentVideo   
     }
 })
