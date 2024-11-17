@@ -1,7 +1,8 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
+import { IoVideocam } from "react-icons/io5";
 
-const VideoProgressBar = () => {
+const VideoProgressBar = ({ icon = <IoVideocam />, text = "Video" }) => {
   const [isSelected, setIsSelected] = useState(false);
   const blueBoxRef = useRef(null);
 
@@ -19,15 +20,19 @@ const VideoProgressBar = () => {
   }, []);
 
   return (
-    <div className="absolute top-16 left-0 h-14 w-full rounded-md flex">
+    <div className="relative top-11 left-0 h-6 w-full rounded-md flex">
       {/* Left Blue Box */}
       <div
         ref={blueBoxRef}
         onClick={() => setIsSelected(true)}
-        className={`h-full w-[30%] bg-blue-400 rounded-l-md rounded-r-[4px] ${
+        className={`h-full w-[30%] bg-blue-400 rounded-l-md rounded-r-[4px] flex items-center opacity-70 ${
           isSelected ? 'border-2 border-r-4 border-gray-100 rounded-r-[4px]' : ''
         }`}
-      ></div>
+      >
+        {/* Dynamic Icon and Text */}
+        <span className="text-gray-900 text-lg font-semibold ml-2 mr-1">{icon}</span>
+        <span className="text-sm text-white">{text}</span>
+      </div>
 
       {/* Right Gray Box */}
       <div

@@ -1,16 +1,15 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
-import { LuMusic4 } from "react-icons/lu";
+import { IoImage } from "react-icons/io5";
 
-
-const AudioOverlayTrack = ({ icon = <LuMusic4 />, text = "audio" }) => {
+const ImageBar = ({ icon = <IoImage />, text = "Image" }) => {
   const [isSelected, setIsSelected] = useState(false);
-  const greenBoxRef = useRef(null);
+  const blueBoxRef = useRef(null);
 
-  // Handle clicks outside of the green box to remove the border
+  // Handle clicks outside of the blue box to remove the border
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (greenBoxRef.current && !greenBoxRef.current.contains(event.target)) {
+      if (blueBoxRef.current && !blueBoxRef.current.contains(event.target)) {
         setIsSelected(false);
       }
     };
@@ -21,12 +20,12 @@ const AudioOverlayTrack = ({ icon = <LuMusic4 />, text = "audio" }) => {
   }, []);
 
   return (
-    <div className="relative top-[96px] left-0 h-6 w-full rounded-md flex">
-      {/* Left Green Box */}
+    <div className="relative top-[70px] left-0 h-6 w-full rounded-md flex">
+      {/* Left Blue Box */}
       <div
-        ref={greenBoxRef}
+        ref={blueBoxRef}
         onClick={() => setIsSelected(true)}
-        className={`h-full w-[30%] bg-blue-500 rounded-l-md rounded-r-[4px] opacity-70 flex items-center ${
+        className={`h-full w-[30%] bg-orange-500 rounded-l-md rounded-r-[4px] flex items-center opacity-70 ${
           isSelected ? 'border-2 border-r-4 border-gray-100 rounded-r-[4px]' : ''
         }`}
       >
@@ -35,14 +34,14 @@ const AudioOverlayTrack = ({ icon = <LuMusic4 />, text = "audio" }) => {
         <span className="text-sm text-white">{text}</span>
       </div>
 
-      {/* Right Box */}
+      {/* Right Gray Box */}
       <div
         className={`h-full w-[70%] bg-[#222223] opacity-40 rounded-r-md rounded-l-[4px] ${
-          isSelected ? 'border-[1px] opacity-10 border-l-0 border-gray-100 ' : ''
+          isSelected ? 'bg-[#222223] border-[1px] opacity-10 border-l-0 border-gray-100 rounded-l-[4px]' : ''
         }`}
       ></div>
     </div>
   );
 };
 
-export default AudioOverlayTrack;
+export default ImageBar;

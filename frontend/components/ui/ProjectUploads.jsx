@@ -105,8 +105,6 @@ function ProjectUploads() {
       type:type
     }
     dispatch(addToCurrentVideo(payload))
-
-
   };
 
 

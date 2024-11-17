@@ -10,12 +10,14 @@ import TextOverlayTrack from './TextOverlayTrack';
 import AudioOverlayTrack from './AudioOverlayTrack';
 import SplitLine from './SplitLine';
 import { useSelector } from 'react-redux';
+import ImageBar from './ImageBar';
 
 const MainTimeline = ({ videoRef, isPlaying, onPlay, onPause, onRewind, onForward }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const currentState=useSelector((state)=>state.currentState)
+  const currentState=useSelector((state)=>state.currentVideo)
   //! [{url:"",name:"",type:""},{url:"",name:"",type:""},{url:"",name:"",type:""}]
+
   useEffect(() => {
     const videoElement = videoRef?.current;
     let animationFrameId;
@@ -52,6 +54,12 @@ const MainTimeline = ({ videoRef, isPlaying, onPlay, onPause, onRewind, onForwar
       };
     }
   }, [videoRef]);
+
+  useEffect(()=>{
+    console.log(currentState)
+  },[currentState])
+
+
 
   const formatTime = (time) => {
     const milliseconds = Math.floor((time % 1) * 1000);
@@ -106,10 +114,27 @@ const MainTimeline = ({ videoRef, isPlaying, onPlay, onPause, onRewind, onForwar
 
       {/* Second Row (Timeline Content) */}
       <div className="w-full h-[170px] bg-gray-600 rounded-lg relative">
-        <TextOverlayTrack />
+      <SplitLine />
+      {
+
+       currentState.map((item, index) => {
+        if(item.type.startsWith("audio/")){
+          return <AudioOverlayTrack key={index} text={item.name}/>
+        }
+        else if(item.type.startsWith("video/")){
+          return <VideoProgressBar key={index} text={item.name}/>
+        }else if(item.type.startsWith("image/")){
+          return <ImageBar key={index} text={item.name}/>
+        }
+        else{
+          return <></>
+        } 
+    })
+}
+        {/* <TextOverlayTrack />
         <VideoProgressBar />
-        <AudioOverlayTrack />
-        <SplitLine />
+        <AudioOverlayTrack text="Hello"/> */}
+        
       </div>
     </div>
   );
