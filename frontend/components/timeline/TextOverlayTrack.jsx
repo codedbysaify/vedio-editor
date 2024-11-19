@@ -18,9 +18,9 @@ const TextOverlayTrack = ({ icon = <MdTextFields />, text = "Text" }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  // top-[18px]
   return (
-    <div className="relative top-[18px] left-0 h-6 w-full rounded-md flex">
+    <div className="relative  mb-1 left-0 h-6 w-full rounded-md flex">
       {/* Left Green Box */}
       <div
         ref={greenBoxRef}

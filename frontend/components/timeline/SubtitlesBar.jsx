@@ -2,14 +2,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoImage } from "react-icons/io5";
 
-const ImageBar = ({ icon = <IoImage />, text = "Image" }) => {
+const SubtitlesBar = ({ icon = <IoImage />, text = "subtitles" }) => {
   const [isSelected, setIsSelected] = useState(false);
-  const blueBoxRef = useRef(null);
+  const purpleBoxRef = useRef(null);
 
   // Handle clicks outside of the blue box to remove the border
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (blueBoxRef.current && !blueBoxRef.current.contains(event.target)) {
+      if (purpleBoxRef.current && !purpleBoxRefBoxRef.current.contains(event.target)) {
         setIsSelected(false);
       }
     };
@@ -23,9 +23,9 @@ const ImageBar = ({ icon = <IoImage />, text = "Image" }) => {
     <div className="relative  mb-1 left-0 h-6 w-full rounded-md flex">
       {/* Left Blue Box */}
       <div
-        ref={blueBoxRef}
+        ref={purpleBoxRef}
         onClick={() => setIsSelected(true)}
-        className={`h-full w-[30%] bg-orange-500 rounded-l-md rounded-r-[4px] flex items-center opacity-70 ${
+        className={`h-full w-[30%] bg-purple-500 rounded-l-md rounded-r-[4px] flex items-center opacity-70 ${
           isSelected ? 'border-2 border-r-4 border-gray-100 rounded-r-[4px]' : ''
         }`}
       >
@@ -44,4 +44,4 @@ const ImageBar = ({ icon = <IoImage />, text = "Image" }) => {
   );
 };
 
-export default ImageBar;
+export default SubtitlesBar;

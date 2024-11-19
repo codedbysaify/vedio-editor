@@ -19,9 +19,9 @@ const AudioOverlayTrack = ({ icon = <LuMusic4 />, text = "audio" }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  // top-[96px]
   return (
-    <div className="relative top-[96px] left-0 h-6 w-full rounded-md flex">
+    <div className="relative  mb-1 left-0 h-6 w-full rounded-md flex">
       {/* Left Green Box */}
       <div
         ref={greenBoxRef}

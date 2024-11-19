@@ -18,9 +18,9 @@ const VideoProgressBar = ({ icon = <IoVideocam />, text = "Video" }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  // top-11
   return (
-    <div className="relative top-11 left-0 h-6 w-full rounded-md flex">
+    <div className="relative  mb-1 left-0 h-6 w-full rounded-md flex">
       {/* Left Blue Box */}
       <div
         ref={blueBoxRef}

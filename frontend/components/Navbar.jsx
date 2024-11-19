@@ -10,6 +10,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import MediaMenu from './ui/MediaMenu';
 import MenuItem from './ui/MenuItem'; // Import MenuItem from ui folder
 import Drawer from './ui/Drawer'; // Import Drawer from ui folder
+import SubtitlesMenu from './ui/SubtitlesMenu';
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -95,23 +96,7 @@ const Navbar = () => {
         </div>
       </div>
     ),
-    'Subtitles': (
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold mb-4">Select Subtitles</h2>
-        {[
-          { icon: <FaRobot className="text-4xl" />, label: 'AI Subtitles', description: 'Automatically recognize speech and generate subtitles' },
-          { icon: <FiType className="text-[24px]" />, label: 'Manual Subtitles', description: 'Add Subtitles Manually' }
-        ].map((item, index) => (
-          <button key={index} className="flex flex-col items-center bg-gray-400 text-white py-2 rounded-md w-full space-y-1">
-            <div className="flex flex-col items-center space-y-2">
-              {item.icon}
-              <span className="font-semibold text-lg text-gray-800">{item.label}</span>
-            </div>
-            <p className="text-sm text-center">{item.description}</p>
-          </button>
-        ))}
-      </div>
-    ),
+    'Subtitles': <SubtitlesMenu/>,
     'Media': <MediaMenu />,
     'Split': 'This is the Split content.',
     'Back': (

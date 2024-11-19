@@ -5,12 +5,22 @@ const slice1=createSlice({
     initialState:[],
     reducers:{
         addToCurrentVideo:(state,action)=>{
+            if(action.payload.type !== "text" && action.payload.type !== "subtitles"){
             let obj={
                 url:action.payload.url,
                 title:action.payload.title,
                 type:action.payload.type
             }
             state.unshift(obj);
+        }else{
+            let obj={
+                //in this case the url will be text aor subtitle text
+                url:action.payload.url,
+                title:action.payload.title,
+                type:action.payload.type
+            }
+            state.push(obj);
+        }
         }
     }
 })
